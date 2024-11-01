@@ -23,6 +23,7 @@ function App() {
   const [lightPosition, setLightPosition] = useState({ x: 0, y: 3, z: 5 });
   const [outfit, setOutfit] = useState('Formals');
   const [showPrice, setShowPrice] = useState(true);
+  const [showControls, setShowControls] = useState(true);
 
   const isTouching = useRef(false);
   const lastTouchX = useRef(0);
@@ -61,9 +62,9 @@ function App() {
   }, []);
 
   const renderPriceDetails = (details) => (
-    <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
+    <ul style={{ listStyleType: 'none', padding: 0, margin: 0, fontSize: '0.9em' }}>
       {Object.entries(details).map(([item, price]) => (
-        <li key={item} style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
+        <li key={item} style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
           <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{item}:</span>
           <span>${price.toFixed(2)}</span>
         </li>
@@ -72,7 +73,7 @@ function App() {
   );
 
   return (
-    <div id="canvas-container" style={{ width: '100vw', height: '100vh' }}>
+    <div id="canvas-container" style={{ width: '100vw', height: '100vh', position: 'relative' }}>
       <Canvas shadowmap="true" shadows="true" camera={{ position: [0, 2.75, 9], fov: 50 }}>
         {lightType === 'Directional' && (
           <directionalLight
@@ -103,18 +104,18 @@ function App() {
         <Environment files="/background/studio.hdr" background ground={{ height: 5, radius: 10, scale: 20 }} />
 
         {showPrice && (
-          <Html position={[-2, 2, 0]} center distanceFactor={5} style={{ pointerEvents: 'none' }}>
+          <Html position={[-1.5, 2, 0]} center distanceFactor={5} style={{ pointerEvents: 'none' }}>
             <div
               style={{
-                background: 'linear-gradient(135deg, rgba(44, 62, 80, 0.85), rgba(149, 165, 166, 0.85))',
+                background: 'rgba(44, 62, 80, 0.85)',
                 color: 'white',
-                padding: '15px',
-                borderRadius: '12px',
-                fontSize: '18px',
+                padding: '10px',
+                borderRadius: '8px',
+                fontSize: '14px',
                 textAlign: 'left',
-                boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.6)',
+                boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.5)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
-                animation: 'fadeIn 0.5s ease-in',
+                width: '150px',
               }}
             >
               <strong>Price Breakdown:</strong>
@@ -124,44 +125,54 @@ function App() {
         )}
       </Canvas>
       
-      {/* Mobile control panel */}
-      <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20, padding: '10px', background: '#333', color: 'white', borderRadius: '10px' }}>
-        <div>
-          <label>Animation:</label>
-          <select value={animation} onChange={(e) => setAnimation(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
-            <option value="Standing">Standing</option>
-            <option value="Dancing">Dancing</option>
-            <option value="Posing">Posing</option>
-          </select>
+      <button 
+        onClick={() => setShowControls(!showControls)} 
+        style={{
+          position: 'absolute', 
+          top: '10px', 
+          right: '10px', 
+          background: '#444', 
+          color: 'white', 
+          padding: '8px 12px', 
+          borderRadius: '8px', 
+          border: 'none'
+        }}
+      >
+        {showControls ? 'Hide Controls' : 'Show Controls'}
+      </button>
+
+      {showControls && (
+        <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20, padding: '10px', background: 'rgba(51, 51, 51, 0.85)', color: 'white', borderRadius: '10px' }}>
+          <div>
+            <label>Animation:</label>
+            <select value={animation} onChange={(e) => setAnimation(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
+              <option value="Standing">Standing</option>
+              <option value="Dancing">Dancing</option>
+              <option value="Posing">Posing</option>
+            </select>
+          </div>
+          <div>
+            <label>Light Type:</label>
+            <select value={lightType} onChange={(e) => setLightType(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
+              <option value="Directional">Directional</option>
+              <option value="Point">Point</option>
+              <option value="Spot">Spot</option>
+            </select>
+          </div>
+          <div>
+            <label>Outfit:</label>
+            <select value={outfit} onChange={(e) => setOutfit(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
+              {Object.keys(outfitPrices).map((o) => (
+                <option key={o} value={o}>{o}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Show Price:</label>
+            <input type="checkbox" checked={showPrice} onChange={(e) => setShowPrice(e.target.checked)} style={{ marginLeft: '5px' }} />
+          </div>
         </div>
-        <div>
-          <label>Light Type:</label>
-          <select value={lightType} onChange={(e) => setLightType(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
-            <option value="Directional">Directional</option>
-            <option value="Point">Point</option>
-            <option value="Spot">Spot</option>
-          </select>
-        </div>
-        <div>
-          <label>Outfit:</label>
-          <select value={outfit} onChange={(e) => setOutfit(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
-            {Object.keys(outfitPrices).map((o) => (
-              <option key={o} value={o}>{o}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Show Price:</label>
-          <input type="checkbox" checked={showPrice} onChange={(e) => setShowPrice(e.target.checked)} style={{ marginLeft: '5px' }} />
-        </div>
-      </div>
-      
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+      )}
     </div>
   );
 }
