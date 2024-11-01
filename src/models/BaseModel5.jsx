@@ -22,13 +22,13 @@ export function BaseModel5(props) {
   useEffect(() => {
     if (actions && actions[animation]) {
       // Play the selected animation and fade it in
-      actions[animation].reset().fadeIn(0.5).play();
+      actions[animation].reset().play();
     }
 
     // Cleanup when component unmounts or animation changes
     return () => {
       if (actions && actions[animation]) {
-        actions[animation].fadeOut(0.5).stop();
+        actions[animation].stop();
       }
     };
   }, [animation, actions]);  // Dependencies on animation and actions

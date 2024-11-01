@@ -21,12 +21,12 @@ export function BaseModel({ animation, outfit }) {
 
   useEffect(() => {
     if (actions && actions[animation]) {
-      actions[animation].reset().fadeIn(0.5).play();
+      actions[animation].reset().play();
     }
 
     return () => {
       if (actions && actions[animation]) {
-        actions[animation].fadeOut(0.5).stop();
+        actions[animation].stop();
       }
     };
   }, [animation, actions]);
