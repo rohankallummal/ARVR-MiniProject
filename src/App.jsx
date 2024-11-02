@@ -95,16 +95,16 @@ function App() {
           />
         )}
 
-        {outfit === 'Formals' && <BaseModel1 animation={animation} rotation-y={rotation} />}
-        {outfit === 'Dress' && <BaseModel2 animation={animation} rotation-y={rotation} />}
-        {outfit === 'Cool' && <BaseModel3 animation={animation} rotation-y={rotation} />}
-        {outfit === 'Casual - Green' && <BaseModel4 animation={animation} rotation-y={rotation} />}
-        {outfit === 'Casual - Maroon' && <BaseModel5 animation={animation} rotation-y={rotation} />}
+        {outfit === 'Formals' && <BaseModel1 animation={animation} rotation-y={rotation} frustumCulled={false} />}
+        {outfit === 'Dress' && <BaseModel2 animation={animation} rotation-y={rotation} frustumCulled={false} />}
+        {outfit === 'Cool' && <BaseModel3 animation={animation} rotation-y={rotation} frustumCulled={false} />}
+        {outfit === 'Casual - Green' && <BaseModel4 animation={animation} rotation-y={rotation} frustumCulled={false} />}
+        {outfit === 'Casual - Maroon' && <BaseModel5 animation={animation} rotation-y={rotation} frustumCulled={false} />}
 
         <Environment files="/background/studio.hdr" background ground={{ height: 5, radius: 10, scale: 20 }} />
 
         {showPrice && (
-          <Html position={[-1.5, 2, 0]} center distanceFactor={6} style={{ pointerEvents: 'none' }}>
+          <Html position={[-1.25, 3, 0]} center distanceFactor={6} style={{ pointerEvents: 'none' }}>
             <div
               style={{
                 background: 'rgba(44, 62, 80, 0.85)',

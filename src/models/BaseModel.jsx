@@ -32,7 +32,7 @@ export function BaseModel({ animation, outfit }) {
   }, [animation, actions]);
 
   return (
-    <group ref={group} dispose={null} scale={[2.5, 2.5, 2.5]} position={[0, -2, 0]}>
+    <group ref={group} dispose={null} scale={[2.5, 2.5, 2.5]} position={[0, -2, 0]} frustumCulled={false}>
       {/* Render all objects in the loaded scene */}
       <primitive object={scene} />
     </group>
