@@ -116,6 +116,8 @@ function App() {
                 boxShadow: '0px 2px 10px rgba(0, 0, 0, 0.5)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 width: '150px',
+                maxWidth: '90vw',
+                wordWrap: 'break-word',
               }}
             >
               <strong>Price Breakdown:</strong>
@@ -142,34 +144,50 @@ function App() {
       </button>
 
       {showControls && (
-        <div style={{ position: 'absolute', bottom: 20, left: 20, right: 20, padding: '10px', background: 'rgba(51, 51, 51, 0.85)', color: 'white', borderRadius: '10px' }}>
-          <div>
-            <label>Animation:</label>
-            <select value={animation} onChange={(e) => setAnimation(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
+        <div style={{
+          position: 'absolute',
+          bottom: 20,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '90vw',
+          maxWidth: '350px',
+          padding: '8px',
+          background: 'rgba(51, 51, 51, 0.85)',
+          color: 'white',
+          borderRadius: '10px',
+          boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.4)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+        }}>
+          <div style={{ marginBottom: '6px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label style={{ marginRight: '8px' }}>Animation:</label>
+            <select value={animation} onChange={(e) => setAnimation(e.target.value)} style={{ margin: '0', padding: '4px', width: '70%' }}>
               <option value="Standing">Standing</option>
               <option value="Dancing">Dancing</option>
               <option value="Posing">Posing</option>
             </select>
           </div>
-          <div>
-            <label>Light Type:</label>
-            <select value={lightType} onChange={(e) => setLightType(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
+          <div style={{ marginBottom: '6px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label style={{ marginRight: '8px' }}>Light Type:</label>
+            <select value={lightType} onChange={(e) => setLightType(e.target.value)} style={{ margin: '0', padding: '4px', width: '70%' }}>
               <option value="Directional">Directional</option>
               <option value="Point">Point</option>
               <option value="Spot">Spot</option>
             </select>
           </div>
-          <div>
-            <label>Outfit:</label>
-            <select value={outfit} onChange={(e) => setOutfit(e.target.value)} style={{ margin: '5px', padding: '5px' }}>
+          <div style={{ marginBottom: '6px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label style={{ marginRight: '8px' }}>Outfit:</label>
+            <select value={outfit} onChange={(e) => setOutfit(e.target.value)} style={{ margin: '0', padding: '4px', width: '70%' }}>
               {Object.keys(outfitPrices).map((o) => (
                 <option key={o} value={o}>{o}</option>
               ))}
             </select>
           </div>
-          <div>
-            <label>Show Price:</label>
-            <input type="checkbox" checked={showPrice} onChange={(e) => setShowPrice(e.target.checked)} style={{ marginLeft: '5px' }} />
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label style={{ marginRight: '8px' }}>Show Price:</label>
+            <input type="checkbox" checked={showPrice} onChange={(e) => setShowPrice(e.target.checked)} />
           </div>
         </div>
       )}
