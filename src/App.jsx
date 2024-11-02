@@ -101,7 +101,7 @@ function App() {
         {outfit === 'Casual - Green' && <BaseModel4 animation={animation} rotation-y={rotation} />}
         {outfit === 'Casual - Maroon' && <BaseModel5 animation={animation} rotation-y={rotation} />}
 
-        <Environment files="/background/background1.hdr" background ground={{ height: 12, radius: 20, scale: 10 }} />
+        <Environment files="/background/studio.hdr" background ground={{ height: 5, radius: 10, scale: 20 }} />
 
         {showPrice && (
           <Html position={[-1.5, 2, 0]} center distanceFactor={6} style={{ pointerEvents: 'none' }}>
