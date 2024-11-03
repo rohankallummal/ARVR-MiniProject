@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, Html } from '@react-three/drei';
+import { useNavigate } from 'react-router-dom';
 import { BaseModel1 } from './models/BaseModel1';
 import { BaseModel2 } from './models/BaseModel2';
 import { BaseModel3 } from './models/BaseModel3';
@@ -24,14 +25,18 @@ function App() {
   const [outfit, setOutfit] = useState('Formals');
   const [showPrice, setShowPrice] = useState(true);
   const [showControls, setShowControls] = useState(true);
+  const navigate = useNavigate();
 
   const isTouching = useRef(false);
   const lastTouchX = useRef(0);
+  const isDragging = useRef(false);
+  const lastMouseX = useRef(0);
 
   useEffect(() => {
     setPriceDetails(outfitPrices[outfit]);
   }, [outfit]);
 
+  // Touch event handlers
   const onTouchStart = (event) => {
     isTouching.current = true;
     lastTouchX.current = event.touches[0].clientX;
@@ -49,12 +54,39 @@ function App() {
     isTouching.current = false;
   };
 
+  // Mouse event handlers
+  const onMouseDown = (event) => {
+    isDragging.current = true;
+    lastMouseX.current = event.clientX;
+  };
+
+  const onMouseMove = (event) => {
+    if (isDragging.current) {
+      const deltaX = event.clientX - lastMouseX.current;
+      setRotation((prevRotation) => prevRotation + deltaX * 0.01);
+      lastMouseX.current = event.clientX;
+    }
+  };
+
+  const onMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  // Attach both mouse and touch event listeners to the document
   useEffect(() => {
+    document.addEventListener('mousedown', onMouseDown);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
     document.addEventListener('touchstart', onTouchStart);
     document.addEventListener('touchmove', onTouchMove);
     document.addEventListener('touchend', onTouchEnd);
 
     return () => {
+      document.removeEventListener('mousedown', onMouseDown);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
       document.removeEventListener('touchstart', onTouchStart);
       document.removeEventListener('touchmove', onTouchMove);
       document.removeEventListener('touchend', onTouchEnd);
@@ -118,6 +150,10 @@ function App() {
                 width: '150px',
                 maxWidth: '90vw',
                 wordWrap: 'break-word',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <strong>Price Breakdown:</strong>
@@ -141,6 +177,28 @@ function App() {
         }}
       >
         {showControls ? 'Hide Controls' : 'Show Controls'}
+      </button>
+
+      {/* Camera Button for AR */}
+      <button
+        onClick={() => navigate('/ar-camera')}
+        style={{
+          position: 'absolute',
+          top: '50px', // Positioned below the controls toggle
+          right: '10px',
+          background: '#444',
+          color: 'white',
+          padding: '8px',
+          borderRadius: '8px',
+          border: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center', // Centering text inside the button
+          textAlign: 'center'
+        }}
+      >
+        <ion-icon name="camera-outline" style={{ marginRight: '8px' }}></ion-icon>
+        Camera
       </button>
 
       {showControls && (
