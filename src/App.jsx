@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, Html } from '@react-three/drei';
-import { useNavigate } from 'react-router-dom';
 import { BaseModel1 } from './models/BaseModel1';
 import { BaseModel2 } from './models/BaseModel2';
 import { BaseModel3 } from './models/BaseModel3';
@@ -25,7 +24,6 @@ function App() {
   const [outfit, setOutfit] = useState('Formals');
   const [showPrice, setShowPrice] = useState(true);
   const [showControls, setShowControls] = useState(true);
-  const navigate = useNavigate();
 
   const isTouching = useRef(false);
   const lastTouchX = useRef(0);
@@ -181,10 +179,10 @@ function App() {
 
       {/* Camera Button for AR */}
       <button
-        onClick={() => navigate('/ar-camera')}
+        onClick={() => window.open('/ar.html', '_blank', 'noopener,noreferrer')}
         style={{
           position: 'absolute',
-          top: '50px', // Positioned below the controls toggle
+          top: '50px', 
           right: '10px',
           background: '#444',
           color: 'white',
@@ -193,7 +191,7 @@ function App() {
           border: 'none',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center', // Centering text inside the button
+          justifyContent: 'center',
           textAlign: 'center'
         }}
       >
