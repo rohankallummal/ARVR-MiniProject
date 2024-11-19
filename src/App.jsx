@@ -1,12 +1,18 @@
+// Importing React and hooks for managing state and lifecycle methods
 import React, { useState, useEffect, useRef } from 'react';
+
+// Importing Three.js components for rendering 3D content
 import { Canvas } from '@react-three/fiber';
 import { Environment, Html } from '@react-three/drei';
+
+// Importing 3D models representing different outfits
 import { BaseModel1 } from './models/BaseModel1';
 import { BaseModel2 } from './models/BaseModel2';
 import { BaseModel3 } from './models/BaseModel3';
 import { BaseModel4 } from './models/BaseModel4';
 import { BaseModel5 } from './models/BaseModel5';
 
+// Price details for each outfit
 const outfitPrices = {
   'Formals': { Shoes: 40.99, Pants: 54.99, Shirt: 49.99, Belt: 20.00 },
   'Dress': { Heels: 59.99, Dress: 79.99 },
@@ -16,35 +22,40 @@ const outfitPrices = {
 };
 
 function App() {
-  const [priceDetails, setPriceDetails] = useState(outfitPrices['Formals']);
-  const [rotation, setRotation] = useState(0);
-  const [animation, setAnimation] = useState('Standing');
-  const [lightType, setLightType] = useState('Directional');
-  const [lightPosition, setLightPosition] = useState({ x: 0, y: 3, z: 5 });
-  const [outfit, setOutfit] = useState('Formals');
-  const [showPrice, setShowPrice] = useState(true);
-  const [showControls, setShowControls] = useState(true);
+  // State variables
+  const [priceDetails, setPriceDetails] = useState(outfitPrices['Formals']); // Current price details of the selected outfit
+  const [rotation, setRotation] = useState(0); // Rotation angle of the 3D model
+  const [animation, setAnimation] = useState('Standing'); // Selected animation for the model
+  const [lightType, setLightType] = useState('Directional'); // Type of light in the scene
+  const [lightPosition, setLightPosition] = useState({ x: 0, y: 3, z: 5 }); // Position of the light source
+  const [outfit, setOutfit] = useState('Formals'); // Currently selected outfit
+  const [showPrice, setShowPrice] = useState(true); // Toggle to show or hide price details
+  const [showControls, setShowControls] = useState(true); // Toggle to show or hide the control panel
 
+  // References for handling touch and mouse events
   const isTouching = useRef(false);
   const lastTouchX = useRef(0);
   const isDragging = useRef(false);
   const lastMouseX = useRef(0);
 
+  // Update the price details whenever the selected outfit changes
   useEffect(() => {
     setPriceDetails(outfitPrices[outfit]);
   }, [outfit]);
 
-  // Touch event handlers
+  // Touch event handlers for rotating the model on phone
   const onTouchStart = (event) => {
-    isTouching.current = true;
-    lastTouchX.current = event.touches[0].clientX;
+    isTouching.current = true; 
+    lastTouchX.current = event.touches[0].clientX; // Record the initial touch position
   };
 
   const onTouchMove = (event) => {
     if (isTouching.current) {
+      // Calculate the change in touch position
       const deltaX = event.touches[0].clientX - lastTouchX.current;
+      // Update the rotation state based on touch movement
       setRotation((prevRotation) => prevRotation + deltaX * 0.01);
-      lastTouchX.current = event.touches[0].clientX;
+      lastTouchX.current = event.touches[0].clientX; // Update the last touch position
     }
   };
 
@@ -52,34 +63,39 @@ function App() {
     isTouching.current = false;
   };
 
-  // Mouse event handlers
+  // Mouse event handlers for rotating the model 
   const onMouseDown = (event) => {
-    isDragging.current = true;
-    lastMouseX.current = event.clientX;
+    isDragging.current = true; 
+    lastMouseX.current = event.clientX; // Record the initial mouse position
   };
 
   const onMouseMove = (event) => {
     if (isDragging.current) {
+      // Calculate the change in mouse position
       const deltaX = event.clientX - lastMouseX.current;
+      // Update the rotation state based on mouse movement
       setRotation((prevRotation) => prevRotation + deltaX * 0.01);
-      lastMouseX.current = event.clientX;
+      lastMouseX.current = event.clientX; // Update the last mouse position
     }
   };
 
   const onMouseUp = () => {
-    isDragging.current = false;
+    isDragging.current = false; // Reset the dragging state
   };
 
-  // Attach both mouse and touch event listeners to the document
+  // Attach event listeners for touch and mouse events when the component mounts
   useEffect(() => {
+    // Mouse events
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
 
+    // Touch events
     document.addEventListener('touchstart', onTouchStart);
     document.addEventListener('touchmove', onTouchMove);
     document.addEventListener('touchend', onTouchEnd);
 
+    // Cleanup event listeners when the component unmounts
     return () => {
       document.removeEventListener('mousedown', onMouseDown);
       document.removeEventListener('mousemove', onMouseMove);
@@ -91,6 +107,7 @@ function App() {
     };
   }, []);
 
+  // Function to render the price details as a list
   const renderPriceDetails = (details) => (
     <ul style={{ listStyleType: 'none', padding: 0, margin: 0, fontSize: '0.9em' }}>
       {Object.entries(details).map(([item, price]) => (
@@ -104,7 +121,9 @@ function App() {
 
   return (
     <div id="canvas-container" style={{ width: '100vw', height: '100vh', position: 'relative' }}>
-      <Canvas shadowmap="true" shadows="true" camera={{ position: [0, 2.75, 9], fov: 50 }}>
+      {/* Canvas for rendering 3D content */}
+      <Canvas receiveShadow shadowmap="true" shadows="true" camera={{ position: [0, 2.75, 9], fov: 50 }}>
+        {/* Conditionally render the light source based on selected light type */}
         {lightType === 'Directional' && (
           <directionalLight
             castShadow
@@ -113,7 +132,11 @@ function App() {
           />
         )}
         {lightType === 'Point' && (
-          <pointLight castShadow position={[lightPosition.x, lightPosition.y, lightPosition.z]} intensity={70} />
+          <pointLight
+            castShadow
+            position={[lightPosition.x, lightPosition.y, lightPosition.z]}
+            intensity={70}
+          />
         )}
         {lightType === 'Spot' && (
           <spotLight
@@ -125,14 +148,32 @@ function App() {
           />
         )}
 
-        {outfit === 'Formals' && <BaseModel1 animation={animation} rotation-y={rotation} frustumCulled={false} />}
-        {outfit === 'Dress' && <BaseModel2 animation={animation} rotation-y={rotation} frustumCulled={false} />}
-        {outfit === 'Cool' && <BaseModel3 animation={animation} rotation-y={rotation} frustumCulled={false} />}
-        {outfit === 'Casual - Green' && <BaseModel4 animation={animation} rotation-y={rotation} frustumCulled={false} />}
-        {outfit === 'Casual - Maroon' && <BaseModel5 animation={animation} rotation-y={rotation} frustumCulled={false} />}
+        {/* Render the selected 3D model with the specified rotation and animation */}
+        {outfit === 'Formals' && (
+          <BaseModel1 animation={animation} rotation-y={rotation} frustumCulled={false} />
+        )}
+        {outfit === 'Dress' && (
+          <BaseModel2 animation={animation} rotation-y={rotation} frustumCulled={false} />
+        )}
+        {outfit === 'Cool' && (
+          <BaseModel3 animation={animation} rotation-y={rotation} frustumCulled={false} />
+        )}
+        {outfit === 'Casual - Green' && (
+          <BaseModel4 animation={animation} rotation-y={rotation} frustumCulled={false} />
+        )}
+        {outfit === 'Casual - Maroon' && (
+          <BaseModel5 animation={animation} rotation-y={rotation} frustumCulled={false} />
+        )}
 
-        <Environment files="/background/studio.hdr" background ground={{ height: 5, radius: 10, scale: 20 }} />
+        {/* HDRI background */}
+        <Environment
+          receiveShadow
+          files="/background/studio.hdr"
+          background
+          ground={{ height: 5, radius: 10, scale: 20 }}
+        />
 
+        {/* Display the price details if showPrice is true */}
         {showPrice && (
           <Html position={[-1.25, 3, 0]} center distanceFactor={6} style={{ pointerEvents: 'none' }}>
             <div
@@ -160,29 +201,30 @@ function App() {
           </Html>
         )}
       </Canvas>
-      
-      <button 
-        onClick={() => setShowControls(!showControls)} 
+
+      {/* Button to toggle the visibility of the control panel */}
+      <button
+        onClick={() => setShowControls(!showControls)}
         style={{
-          position: 'absolute', 
-          top: '10px', 
-          right: '10px', 
-          background: '#444', 
-          color: 'white', 
-          padding: '8px 12px', 
-          borderRadius: '8px', 
-          border: 'none'
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          background: '#444',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '8px',
+          border: 'none',
         }}
       >
         {showControls ? 'Hide Controls' : 'Show Controls'}
       </button>
 
-      {/* Camera Button for AR */}
+      {/* Button to open the AR view in a new window */}
       <button
         onClick={() => window.open('/ar.html', '_blank', 'noopener,noreferrer')}
         style={{
           position: 'absolute',
-          top: '50px', 
+          top: '50px',
           right: '10px',
           background: '#444',
           color: 'white',
@@ -192,58 +234,117 @@ function App() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
         <ion-icon name="camera-outline" style={{ marginRight: '8px' }}></ion-icon>
         Camera
       </button>
 
+      {/* Control panel for adjusting settings, visible when showControls is true */}
       {showControls && (
-        <div style={{
-          position: 'absolute',
-          bottom: 20,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '90vw',
-          maxWidth: '350px',
-          padding: '8px',
-          background: 'rgba(51, 51, 51, 0.85)',
-          color: 'white',
-          borderRadius: '10px',
-          boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.4)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}>
-          <div style={{ marginBottom: '6px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 20,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '90vw',
+            maxWidth: '350px',
+            padding: '8px',
+            background: 'rgba(51, 51, 51, 0.85)',
+            color: 'white',
+            borderRadius: '10px',
+            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.4)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+          }}
+        >
+          {/* Dropdown for selecting animation */}
+          <div
+            style={{
+              marginBottom: '6px',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <label style={{ marginRight: '8px' }}>Animation:</label>
-            <select value={animation} onChange={(e) => setAnimation(e.target.value)} style={{ margin: '0', padding: '4px', width: '70%' }}>
+            <select
+              value={animation}
+              onChange={(e) => setAnimation(e.target.value)}
+              style={{ margin: '0', padding: '4px', width: '70%' }}
+            >
               <option value="Standing">Standing</option>
               <option value="Dancing">Dancing</option>
               <option value="Posing">Posing</option>
             </select>
           </div>
-          <div style={{ marginBottom: '6px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+          {/* Dropdown for selecting light type */}
+          <div
+            style={{
+              marginBottom: '6px',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <label style={{ marginRight: '8px' }}>Light Type:</label>
-            <select value={lightType} onChange={(e) => setLightType(e.target.value)} style={{ margin: '0', padding: '4px', width: '70%' }}>
+            <select
+              value={lightType}
+              onChange={(e) => setLightType(e.target.value)}
+              style={{ margin: '0', padding: '4px', width: '70%' }}
+            >
               <option value="Directional">Directional</option>
               <option value="Point">Point</option>
               <option value="Spot">Spot</option>
             </select>
           </div>
-          <div style={{ marginBottom: '6px', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+          {/* Dropdown for selecting outfit */}
+          <div
+            style={{
+              marginBottom: '6px',
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <label style={{ marginRight: '8px' }}>Outfit:</label>
-            <select value={outfit} onChange={(e) => setOutfit(e.target.value)} style={{ margin: '0', padding: '4px', width: '70%' }}>
+            <select
+              value={outfit}
+              onChange={(e) => setOutfit(e.target.value)}
+              style={{ margin: '0', padding: '4px', width: '70%' }}
+            >
               {Object.keys(outfitPrices).map((o) => (
-                <option key={o} value={o}>{o}</option>
+                <option key={o} value={o}>
+                  {o}
+                </option>
               ))}
             </select>
           </div>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+          {/* Checkbox to toggle price details visibility */}
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <label style={{ marginRight: '8px' }}>Show Price:</label>
-            <input type="checkbox" checked={showPrice} onChange={(e) => setShowPrice(e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={showPrice}
+              onChange={(e) => setShowPrice(e.target.checked)}
+            />
           </div>
         </div>
       )}
