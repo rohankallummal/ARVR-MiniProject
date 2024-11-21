@@ -28,17 +28,17 @@ Ensure you have the following installed on your system:
 
 Follow these steps to run VogueVerse on your local system:  
 
-1. **Clone the repository**  
-git clone https://github.com/rohankallummal/ARVR-PROJECT/  
+1. **Clone the repository**
+   git clone https://github.com/rohankallummal/ARVR-PROJECT/  
 
-2. ** Navigate to the project directory**
-cd ARVR-PROJECT  
+3. **Navigate to the project directory**
+   cd ARVR-PROJECT  
 
-3. ** Install dependencies**
-npm install  
+4. **Install dependencies**
+   npm install  
 
-4. ** Start the Project**
-	npm run dev  
+6. **Start the Project**
+   npm run dev  
 
 ### View Online
 Experience VogueVerse through Vercel:
