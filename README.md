@@ -1,13 +1,49 @@
-# VogueVerse
+# VogueVerse  
 
-Change clothes on an avatar in a virtual environment(VR) and view their prices! You can also change the lighting of the environment and poses of the model provided. We have also implemented AR: when you click on the 'Camera' button, you can hold the marker provided to view the model on the marker!
+**Experience fashion with VogueVerse!** 
+Interact with a 3D model to change outfits, view prices for each clothing item, adjust environmental lighting, and customize poses. Take it a step further with Augmented Reality (AR): project the model into the real world using your device's camera and a designated marker.
+---
 
-Steps to run it on your local system:
-1. Please have Nodejs, Vite & Threejs available in your system
-2. Clone this repository to your local directory using the command: git clone https://github.com/rohankallummal/ARVR-PROJECT/
-3. Install node modules using this command: npm install
-4. To run the project, run this command: npm run dev
-5. Click on the local host link provided to view the project
+## Features  
 
-To view it online: https://arvr-project-five.vercel.app/
-![image](https://github.com/user-attachments/assets/f96d98bb-40d7-4d06-9209-652ab5aae332)
+- **Virtual Wardrobe:** Try different clothes on a 3D avatar in a virtual environment.  
+- **Dynamic Pricing:** View the prices of the selected outfits in real time.  
+- **Environment Customization:** Change the lighting to see how outfits look under various conditions.  
+- **Custom Poses:** Adjust the model’s poses to your liking.  
+- **Augmented Reality (AR):** Click on the 'Camera' button to activate AR. Use the provided marker to project the model into your space!  
+
+---
+
+## Getting Started  
+
+### Prerequisites  
+
+Ensure you have the following installed on your system:  
+- **Node.js**  
+- **Vite**  
+- **Three.js**  
+
+---
+
+### Run Locally  
+
+Follow these steps to run VogueVerse on your local system:  
+
+1. **Clone the repository**  
+git clone https://github.com/rohankallummal/ARVR-PROJECT/  
+
+2. ** Navigate to the project directory**
+cd ARVR-PROJECT  
+
+3. ** Install dependencies**
+npm install  
+
+4. ** Start the Project**
+	npm run dev  
+
+### View Online
+Experience VogueVerse through Vercel:
+https://arvr-mini-project.vercel.app/
+
+# Preview
+![image](https://github.com/user-attachments/assets/0d26f517-69bd-4cf1-84ce-0a3459d2317a)
