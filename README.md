@@ -1,7 +1,6 @@
 # VogueVerse  
 
 **Experience fashion with VogueVerse!** 
-Interact with a 3D model to change outfits, view prices for each clothing item, adjust environmental lighting, and customize poses. Take it a step further with Augmented Reality (AR): project the model into the real world using your device's camera and a designated marker.
 ---
 
 ## Features  
@@ -10,7 +9,7 @@ Interact with a 3D model to change outfits, view prices for each clothing item, 
 - **Dynamic Pricing:** View the prices of the selected outfits in real time.  
 - **Environment Customization:** Change the lighting to see how outfits look under various conditions.  
 - **Custom Poses:** Adjust the model’s poses to your liking.  
-- **Augmented Reality (AR):** Click on the 'Camera' button to activate AR. Use the provided marker to project the model into your space!  
+- **Augmented Reality (AR):** Click the 'Camera' button to activate AR and use the provided marker to project the model directly into your space!
 
 ---
 
